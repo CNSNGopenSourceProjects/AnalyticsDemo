@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Analytics Demo</string>
+    <string name="na_activity_secundaria">Na Activity Secundária</string>
+    <string name="simula_excecao">Simula Exceção</string>
+    <string name="na_activity_principal">Na Activity Principal</string>
+    <string name="ir_para_a_activity_2">Ir para a Activity 2</string>
 </resources>

@@ -1,13 +1,17 @@
 package br.com.conseng.analyticsdemo
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import com.google.android.gms.analytics.HitBuilders
-import kotlinx.android.synthetic.main.activity_main.*
+
+/**
+ * Cria o TRACKER de acompanhamento da
+ */
+lateinit var analytics: AnalyticsApplication
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,40 +25,35 @@ class MainActivity : AppCompatActivity() {
      */
     private val SCREEN_NAME = "Tela Principal"
 
-    /**
-     * Cria o TRACKER de acompanhamento da
-     */
-    private lateinit var application: AnalyticsApplication
+//    /**
+//     * Cria o TRACKER de acompanhamento da
+//     */
+//    private lateinit var application: AnalyticsApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // Cria o Tracker que enviará os dados de rastreio da APP para o Google Analytics
-        application=AnalyticsApplication(this)
-        val tracker=application.tracker
-        // Set screen name
-        tracker.setScreenName(SCREEN_NAME)
-        // Send a screen view
-        // Send a screen view.
-        tracker.send(HitBuilders.ScreenViewBuilder().build())
-        // This event will also be sent with the most recently set screen name.
-        // Build and send an Event.
-        tracker.send(HitBuilders.EventBuilder()
-                .setCategory(getString(categoryId))
-                .setAction(getString(actionId))
-                .setLabel(getString(labelId))
-                .build())
-        // Clear the screen name field when we're done.
-        tracker.setScreenName(null)
+        analytics = AnalyticsApplication(this)
 
         printCurrentState("onCreate")
+    }
 
-        val btnNext : Button = btn_next_activity
-        btnNext.setOnClickListener { v: View? ->
-            val intent= Intent(this, Main2Activity::class.java)
-            startActivity(intent)
-        }
+    /**
+     * Processa o click do botão para abrir a segunda Activity.
+     * @param [view] view associada ao evento.
+     */
+    fun nextActivity(view: View) {
+        //  Ratreia o evento de click para o Google Analytics
+        val tracker = analytics.tracker
+        tracker.send(HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click")
+                .build())
+        // Chama a segunda atividade
+        val intent = Intent(this, Main2Activity::class.java)
+        startActivity(intent)
     }
 
     override fun onStart() {
@@ -64,6 +63,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        // Cria o Tracker que enviará os dados de rastreio da APP para o Google Analytics
+        val tracker = analytics.tracker
+        // Set screen name
+        tracker.setScreenName(SCREEN_NAME)
+        // Send a screen view
+        tracker.send(HitBuilders.ScreenViewBuilder().build())
+        // Clear the screen name field when we're done.
+        tracker.setScreenName(null)
+
         printCurrentState("onResume")
     }
 
@@ -87,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         printCurrentState("onDestroy")
     }
 
-    private fun printCurrentState(estado:String) {
+    private fun printCurrentState(estado: String) {
         Log.d(STATE_TAG1, "state=$estado")
 //        println("$STATE_TAG1 : state=$estado")
     }
