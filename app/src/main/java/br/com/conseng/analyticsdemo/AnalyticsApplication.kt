@@ -12,6 +12,7 @@ import com.google.android.gms.analytics.Tracker
  * @param [reportException] reportar problemas na aplicação ou não. Default = true.
  * @param [reportActivity] rastrear automaticamente as Activities ou não. Default = true.
  * @see [https://developers.google.com/analytics/devguides/collection/android/v4/advanced]
+ * @see [https://developers.google.com/android/reference/com/google/android/gms/analytics/GoogleAnalytics]
  */
 class AnalyticsApplication(context: Context,
                            reportException: Boolean = true,

@@ -8,7 +8,7 @@ import android.view.View
 import com.google.android.gms.analytics.HitBuilders
 
 /**
- * Cria o TRACKER de acompanhamento da
+ * Cria o TRACKER de rastreamento da aplicação para o Google Analytics.
  */
 lateinit var analytics: AnalyticsApplication
 
